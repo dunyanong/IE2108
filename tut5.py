@@ -80,7 +80,8 @@ def jointTogether(Q, P):
     if len(P) == 0: 
         return
     
-    Q.append(P.pop(0))    
+    dequeue = P.pop(0)
+    Q.append(dequeue)    
     jointTogether(Q, P)
 
 
