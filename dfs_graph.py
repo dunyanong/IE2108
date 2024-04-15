@@ -14,24 +14,26 @@ graph = {
     13: [11]
 }
 
+
 def dfs(start, graph):
+    if not graph:
+        return []
+    
     visited = set()
     stack = [start]
-    
     res = []
     
     while stack:
         current = stack.pop()
-        
         if (current not in visited):
             visited.add(current)
             res.append(current)
             
             for neighbour in graph[current]:
-                if neighbour not in visited:
-                    stack.append(neighbour)     
-            
+                if (neighbour not in visited):
+                    stack.append(neighbour)
     return res
+
 
 print(dfs(1, graph))
 
