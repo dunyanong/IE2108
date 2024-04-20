@@ -2,18 +2,16 @@ import heapq
 
 # list down all of the distances to all nodes
 def dijkstra(graph, start):
-    # setup the graph
     distances = {}
     for node in graph:
         distances[node] = float("inf")
-        
-    distances[start] = 0
     
-    priority_queue = [(distances[start], start)]
+    distances[start] = 0
+    priority_queue = [(0, start)]
     
     while priority_queue:
         current_distance, current_node = heapq.heappop(priority_queue)
-
+        
         if distances[current_node] < current_distance:
             continue
         
@@ -25,9 +23,6 @@ def dijkstra(graph, start):
                 heapq.heappush(priority_queue, (sum_distance ,neighbour))
     
     return distances
-        
-
-        
 
 graph = {
     'A': {'B': 2, 'C': 5},

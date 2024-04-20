@@ -1,57 +1,55 @@
-def find(parent, i):
-    if parent[i] == i:
-        return i
-    return find(parent, parent[i])
+class DisjointSet:
+    def __init__(self, vertices):
+        self.parent = [-1] * (vertices + 1)
+        
+    def find(self, node):
+        if self.parent[node] == -1:
+            return node
+        return self.find(self.parent[node])    
+        
+    def union(self, x, y):
+        x_parent = self.find(x)
+        y_parent = self.find(y)
+        
+        if x_parent != y_parent:
+            self.parent[x_parent] = y_parent 
 
-## To avoid cycles
-def union(parent, rank, x, y):
-    xroot = find(parent, x)
-    yroot = find(parent, y)
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices + 1
+        self.adjacency_list = []
+        
+    def add_edge(self, u, v, weight):
+        self.adjacency_list.append((u, v, weight))
+        
+    def kruskal(self):
+        self.adjacency_list.sort(key=lambda x:x[2])
+        disjoint_set = DisjointSet(self.V)
+        mst = []
+        
+        for edge in self.adjacency_list:
+            u, v, weight = edge
+            u_parent = disjoint_set.find(u)
+            v_parent = disjoint_set.find(v)
+            
+            if u_parent != v_parent:
+                mst.append((u, v, weight))
+                disjoint_set.union(u_parent, v_parent)
+                
+        return mst
+                
+g = Graph(4)
 
-    if rank[xroot] < rank[yroot]:
-        parent[xroot] = yroot
-    elif rank[xroot] > rank[yroot]:
-        parent[yroot] = xroot
-    else:
-        parent[yroot] = xroot
-        rank[xroot] += 1
+# Add edges to the graph
+g.add_edge(1, 2, 10)
+g.add_edge(1, 3, 15)
+g.add_edge(1, 4, 20)
+g.add_edge(2, 3, 35)
+g.add_edge(2, 4, 5)
+g.add_edge(3, 4, 30)
 
-def kruskal(graph):
-    edges = []
-    result = []
+mst = g.kruskal()
 
-    for u in graph:
-        for v, w in graph[u]:
-            edges.append((w, u, v))
-
-    edges.sort()
-
-    parent = {}
-    rank = {}
-
-    for u in graph:
-        parent[u] = u
-        rank[u] = 0
-
-    for edge in edges:
-        w, u, v = edge
-        x = find(parent, u)
-        y = find(parent, v)
-
-        if x != y:
-            result.append((u, v, w))
-            union(parent, rank, x, y)
-
-    return result
-
-graph = {
-    "A": [("B", 2), ("D", 5)],
-    "B": [("A", 2), ("C", 1), ("D", 3)],
-    "C": [("B", 1), ("D", 4)],
-    "D": [("A", 5), ("B", 3), ("C", 4)]
-}
-
-minimum_spanning_tree = kruskal(graph)
-print("Minimum Spanning Tree:")
-for u, v, w in minimum_spanning_tree:
-    print(f"{u} - {v}: {w}")
+print("Min Spanning Tree: ")
+for edge in mst:
+    print(edge)
