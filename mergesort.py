@@ -1,38 +1,35 @@
 def merge_sort(arr):
-    if (len(arr) == 1):
+    if len(arr) == 1:
         return arr
     
     mid = len(arr) // 2
-    left_half = arr[:mid]
-    right_half = arr[mid:]
     
-    left_half = merge_sort(left_half)
-    right_half = merge_sort(right_half)
+    left = arr[:mid]
+    right = arr[mid:]
     
-    return merge(left_half, right_half)
-
-def merge(left, right):
-    merged = []
-    left_index, right_index = 0, 0
+    left = merge_sort(left)
+    right = merge_sort(right)
     
-    while left_index < len(left) and right_index < len(right):
-        if (left[left_index] < right[right_index]):
-            merged.append(left[left_index])
-            left_index += 1
+    return merge(left, right)
+    
+def merge(x, y):
+    # x = [1, 6, 4, 9, 7]
+    # y = [3, 5, 6, 2, 1]
+    x_pointer = 0
+    y_pointer = 0
+    res = []
+    
+    while (x_pointer < len(x) and y_pointer < len(y)):
+        if x[x_pointer] <= y[y_pointer]:
+            res.append(x[x_pointer])
+            x_pointer += 1 
         else:
-            merged.append(right[right_index])
-            right_index += 1
-            
-    merged.extend(left[left_index:])
-    merged.extend(right[right_index:])
+            res.append(y[y_pointer])
+            y_pointer += 1
     
-    return merged
+    res.extend(x[x_pointer:])
+    res.extend(y[y_pointer:])
+    
+    return res
 
-# Example usage:
-arr = [12, 11, 13, 5, 6, 7]
-sorted_arr = merge_sort(arr)
-print("Sorted array:", sorted_arr)
-
-
-
-
+print(merge_sort([4, 3, 6, 2, 1, 8, 9]))
