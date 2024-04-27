@@ -1,29 +1,23 @@
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-
-def find(src, x):
-    current = src
-    if current is None:
-        return None
+def reverse_string(s):
+    # Initialize two pointers
+    left = 0
+    right = len(s) - 1
     
-    if x == current.val:
-        return current.val
-    elif x < current.val:
-        return find(current.left, x)
-    else:
-        return find(current.right, x)
-
+    s = list(s)
+    
+    # Loop until the pointers meet or cross
+    while left < right:
+        # Swap characters at left and right pointers
+        s[left], s[right] = s[right], s[left]
         
+        # Move the pointers towards each other
+        left += 1
+        right -= 1
+    
+    # Convert the list back to string
+    return "".join(s)
 
-root = TreeNode(5)
-root.left = TreeNode(3)
-root.right = TreeNode(7)
-root.left.left = TreeNode(2)
-root.left.right = TreeNode(4)
-root.right.left = TreeNode(6)
-root.right.right = TreeNode(8)
-
-print(find(root, 2))
+# Example usage:
+s = "hello"
+reversed_s = reverse_string(s)
+print("Reversed string:", reversed_s)
